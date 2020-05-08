@@ -8,7 +8,9 @@ let GameName = "Project Afloat"
 
 let ProjectSourcePath = "project-src";
 let ProjectDestPath = `project-dest`;
-let ProjectDestExePath = `${ProjectDestPath}\\${GameName}.exe`;
+let WindowsExePath = `${ProjectDestPath}\\Windows\\${GameName}.exe`;
+let MacExePath = `${ProjectDestPath}\\Mac\\${GameName}.exe`;
+let LinuxExePath = `${ProjectDestPath}\\Linux\\${GameName}.exe`;
 
 let GitUrl = "https://github.com/vfs-sct/Afloat";
 let TargetBranch = "develop";
@@ -49,8 +51,19 @@ gulp.task("pull", done => {
     runCmd(done, `git clone -b ${TargetBranch} ${GitUrl} "${ProjectSourcePath}"`)
 });
 
+
+
+// NOTE: all teams may not want the 3 builds
+
+/// https://docs.unity3d.com/Manual/CommandLineArguments.html
 gulp.task("unity-build", done => {
-    runCmd(done, `"${UnityPath}" -quit -batchmode -logFile stdout.log -projectPath "%cd%\\${ProjectSourcePath}" -buildWindowsPlayer "%cd%\\${ProjectDestExePath}"`)
+    runCmd(done, 
+        `"${UnityPath}" -quit -batchmode -logFile stdout.log `+
+        `-projectPath "%cd%\\${ProjectSourcePath}" `+
+        `-buildWindows64Player "%cd%\\${WindowsExePath}" `+
+        `-buildOSXUniversalPlayer "%cd%\\${MacExePath}" `+
+        `-buildLinux64Player "%cd%\\${LinuxExePath}"`
+    )
 });
 
 gulp.task("rebuild", gulp.series("clear-dest", "unity-build"));
