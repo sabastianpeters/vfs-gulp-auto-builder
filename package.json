@@ -1,0 +1,16 @@
+{
+  "name": "gulp-getting-started",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "run": "gulp"
+  },
+  "author": "sabastian_peters <sabastianp@hotmail.ca>",
+  "license": "ISC",
+  "dependencies": {
+    "gulp": "^4.0.2",
+    "gulp-exec": "^4.0.0"
+  }
+}
