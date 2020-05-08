@@ -6,7 +6,7 @@ const exec = require('child_process').exec;
 let UnityPath = "";
 let ProjectFolderName = "project-src";
 let GitUrl = "https://github.com/sabastianpeters/VFS-Portfolio";
-
+let TargetBranch = "develop";
 
 function runCmdNoError (done, cmd)
 {
@@ -27,13 +27,16 @@ function runCmd (done, cmd)
 }
 
 
+gulp.task("clear", done => {
+    runCmd(done, `rd /s /q "%cd%\\${ProjectFolderName}"`)
+})
 
 gulp.task("pull", done => {
-    runCmd(done, `git clone ${GitUrl} "${ProjectFolderName}"`)
+    runCmd(done, `git clone -b ${TargetBranch} ${GitUrl} "${ProjectFolderName}"`)
 });
 
 gulp.task("unity-build", done => {
 });
 
 
-gulp.task("default", gulp.series("pull", "unity-build"));
+gulp.task("default", gulp.series("clear", "pull", "unity-build"));
