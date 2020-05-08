@@ -56,7 +56,7 @@ gulp.task("pull", done => {
 // NOTE: all teams may not want the 3 builds
 
 /// https://docs.unity3d.com/Manual/CommandLineArguments.html
-gulp.task("unity-build", done => {
+gulp.task("build-unity", done => {
     runCmd(done, 
         `"${UnityPath}" -quit -batchmode -logFile stdout.log `+
         `-projectPath "%cd%\\${ProjectSourcePath}" `+
@@ -66,7 +66,12 @@ gulp.task("unity-build", done => {
     )
 });
 
-gulp.task("rebuild", gulp.series("clear-dest", "unity-build"));
+gulp.task("build-unreal", done => {
+    // TODO: ask Rohit
+});
 
-// gulp.task("default", gulp.series("clear", "pull", "unity-build"));
+gulp.task("rebuild-unity", gulp.series("clear-dest", "build-unity"));
+gulp.task("rebuild-unreal", gulp.series("clear-dest", "build-unreal"));
+
+// gulp.task("default", gulp.series("clear", "pull", "build-unity"));
 gulp.task("default", gulp.series("rebuild"));
