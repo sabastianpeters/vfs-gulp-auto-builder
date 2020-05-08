@@ -114,3 +114,5 @@ project-src
 project-dest/
 
 credentials.json
+
+token.json
