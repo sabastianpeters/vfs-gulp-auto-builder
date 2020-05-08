@@ -112,3 +112,5 @@ temp/
 project-src
 
 project-dest/
+
+credentials.json

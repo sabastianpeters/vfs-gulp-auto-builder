@@ -5,11 +5,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "run": "gulp"
+    "run": "gulp",
+    "auth": "node authorize.js"
   },
   "author": "sabastian_peters <sabastianp@hotmail.ca>",
   "license": "ISC",
   "dependencies": {
+    "googleapis": "^50.0.0",
     "gulp": "^4.0.2",
     "gulp-exec": "^4.0.0"
   }
