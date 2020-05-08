@@ -4,9 +4,10 @@ const gulpExec = require("gulp-exec");
 const exec = require('child_process').exec;
 
 let UnityVersion = "2019.3.12f1";
+let GameName = "Project Afloat"
 
-let ProjectSourceFolderName = "project-src";
-let ProjectDestFolderName = "project-src";
+let ProjectSourcePath = "project-src";
+let ProjectDestPath = `project-dest\\${GameName}`;
 
 let GitUrl = "https://github.com/vfs-sct/Afloat";
 let TargetBranch = "develop";
@@ -35,21 +36,21 @@ function runCmd (done, cmd)
 
 
 gulp.task("clear-src", done => {
-    runCmdNoError(done, `rd /s /q "%cd%\\${ProjectSourceFolderName}"`)
+    runCmdNoError(done, `rd /s /q "%cd%\\${ProjectSourcePath}"`)
 });
 gulp.task("clear-dest", done => {
-    runCmdNoError(done, `rd /s /q "%cd%\\${ProjectDestFolderName}"`)
+    runCmdNoError(done, `rd /s /q "%cd%\\${ProjectDestPath}"`)
 });
 
 gulp.task("clear", gulp.parallel(["clear-src", "clear-dest"]));
 
 gulp.task("pull", done => {
-    runCmd(done, `git clone -b ${TargetBranch} ${GitUrl} "${ProjectSourceFolderName}"`)
+    runCmd(done, `git clone -b ${TargetBranch} ${GitUrl} "${ProjectSourcePath}"`)
 });
 
 gulp.task("unity-build", done => {
     // runCmd(done, "mkdir $")
-    runCmd(done, `"${UnityPath}" -quit -batchmode -logFile stdout.log -projectPath "%cd%\\${ProjectSourceFolderName}" -buildWindowsPlayer "%cd$\\${ProjectDestFolderName}"`)
+    runCmd(done, `"${UnityPath}" -quit -batchmode -logFile stdout.log -projectPath "%cd%\\${ProjectSourcePath}" -buildWindowsPlayer "%cd$\\${ProjectDestPath}"`)
 });
 
 
