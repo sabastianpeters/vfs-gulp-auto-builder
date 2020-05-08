@@ -93,8 +93,21 @@ gulp.task("rebuild-unreal", gulp.series("clear-dest", "build-unreal"));
 
 // ## UPLOAD TASKS ##
 
+const gAuth = require('./lib/GoogleAuth.js');
+const gDrive = require('./lib/GoogleDrive.js')
+const gDriveTools = require('./lib/GoogleDriveTools.js')
 
 
+gulp.task("upload", async (done) => {
+    
+    // Authorize client (must be done from pre)
+    let credentials = await gAuth.loadCredentials();
+    await gAuth.authorize(credentials.installed);
+
+    await gDriveTools.createFileStructure(GAME_NAME)
+
+    done();
+})
 
 
 
@@ -104,4 +117,5 @@ gulp.task("rebuild-unreal", gulp.series("clear-dest", "build-unreal"));
 // ## DEFAULT TASK (THATS AUTO-RUN)
 
 // gulp.task("default", gulp.series("clear", "pull", "build-unity"));
-gulp.task("default", gulp.series("rebuild"));
+// gulp.task("default", gulp.series("rebuild"));
+gulp.task("default", gulp.series("upload"));

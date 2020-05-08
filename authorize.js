@@ -8,6 +8,7 @@ async function main () {
     let credentials = await gAuth.loadCredentials();
     await gAuth.authorize(credentials.installed);
 
+    console.log(`you are authorized`);
 }
 
 main().catch(console.error);
