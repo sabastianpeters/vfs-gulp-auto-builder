@@ -7,7 +7,8 @@ let UnityVersion = "2019.3.12f1";
 let GameName = "Project Afloat"
 
 let ProjectSourcePath = "project-src";
-let ProjectDestPath = `project-dest\\${GameName}`;
+let ProjectDestPath = `project-dest`;
+let ProjectDestExePath = `${ProjectDestPath}\\${GameName}.exe`;
 
 let GitUrl = "https://github.com/vfs-sct/Afloat";
 let TargetBranch = "develop";
@@ -49,9 +50,10 @@ gulp.task("pull", done => {
 });
 
 gulp.task("unity-build", done => {
-    // runCmd(done, "mkdir $")
-    runCmd(done, `"${UnityPath}" -quit -batchmode -logFile stdout.log -projectPath "%cd%\\${ProjectSourcePath}" -buildWindowsPlayer "%cd$\\${ProjectDestPath}"`)
+    runCmd(done, `"${UnityPath}" -quit -batchmode -logFile stdout.log -projectPath "%cd%\\${ProjectSourcePath}" -buildWindowsPlayer "%cd%\\${ProjectDestExePath}"`)
 });
 
+gulp.task("rebuild", gulp.series("clear-dest", "unity-build"));
 
-gulp.task("default", gulp.series("clear", "pull", "unity-build"));
+// gulp.task("default", gulp.series("clear", "pull", "unity-build"));
+gulp.task("default", gulp.series("rebuild"));
