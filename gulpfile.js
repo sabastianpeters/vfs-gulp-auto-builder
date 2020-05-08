@@ -5,7 +5,7 @@ const exec = require('child_process').exec;
 
 let UnityPath = "";
 let ProjectFolderName = "project-src";
-let GitUrl = "https://github.com/sabastianpeters/VFS-Portfolio";
+let GitUrl = "https://github.com/vfs-sct/Afloat";
 let TargetBranch = "develop";
 
 function runCmdNoError (done, cmd)
@@ -28,7 +28,7 @@ function runCmd (done, cmd)
 
 
 gulp.task("clear", done => {
-    runCmd(done, `rd /s /q "%cd%\\${ProjectFolderName}"`)
+    runCmdNoError(done, `rd /s /q "%cd%\\${ProjectFolderName}"`)
 })
 
 gulp.task("pull", done => {
