@@ -30,7 +30,9 @@
 ![3](./readme-assets/task-schedueller-3.png)
 ![4](./readme-assets/task-schedueller-4.png)
 ![5](./readme-assets/task-schedueller-5.png)
-> ^ NOTE: the start path is the location where Task Scheduler will run the provided command. Select the path of the builder with "Browse" and copy-past the path to the "Start in" field
+> ^ NOTE: this image is incorrect. we need to create a file called `build.cmd` with the contents `gulp full-unity-build`
+> 
+> this will the start path is the location where Task Scheduler will run the provided command. Select the path of the builder with "Browse" and copy-past the path to the "Start in" field
 >
 > as well, if building with unreal, do a "full-unreal-build" instead of unity
 
