@@ -160,13 +160,21 @@ gulp.task("upload", async (done) => {
 
     // await gDriveTools.createFileStructure(GAME_NAME) /// use this to create the file structure
     
-    const GOOGLE_FILE_ID_LIST = {
-        WINDOWS: "a",
-        OSX: "a",
-        LINUX: "a"
+    // defines google file id on the fly
+    buildPlatformData.windows.googleFileId = "1PPjKp-1yw6eTM6bnnRcPBKkOWQ2hB0ap";
+    buildPlatformData.osx.googleFileId = "1GuoZSz6WAitbp_N1k78jkhyIkLwwDYW3";
+    buildPlatformData.linux.googleFileId = "1NTMBFaYvHf62ZQVMUOCctpunmJOEbAll";
+
+    
+    for(let key in buildPlatformData){
+        let platformData = buildPlatformData[key];
+
+        gDrive.uploadFile({
+            targetFileId: platformData.googleFileId,
+            localPath: path.join(__dirname, platformData.zipPath),
+            mimeType: "application/zip"
+        });
     }
-
-
 
     done();
 })
@@ -180,7 +188,7 @@ gulp.task("upload", async (done) => {
 
 // gulp.task("default", gulp.series("clear", "pull", "build-unity"));
 // gulp.task("default", gulp.series("rebuild"));
-gulp.task("default", gulp.series("compress-builds"));
+gulp.task("default", gulp.series("upload"));
 
 
 
