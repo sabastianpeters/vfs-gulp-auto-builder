@@ -166,21 +166,44 @@ gulp.task("upload", async (done) => {
     buildPlatformData.linux.googleFileId = "1NTMBFaYvHf62ZQVMUOCctpunmJOEbAll";
 
     
+    // loops through each build and uploads it to target file
+    let uploadPromiseList = []
     for(let key in buildPlatformData){
         let platformData = buildPlatformData[key];
 
-        gDrive.uploadFile({
+        uploadPromiseList.push(gDrive.uploadFile({
             targetFileId: platformData.googleFileId,
             localPath: path.join(__dirname, platformData.zipPath),
             mimeType: "application/zip"
-        });
+        }));
     }
 
-    done();
+    // waits for everything to upload to be called done
+    Promise.all(uploadPromiseList).then(() => {
+        done();
+    })
 })
 
 
 
+
+// ## FULL BUILD PROCESSES ##
+
+
+// cli: gulp "full-unity-build"
+// cli: gulp "full-unreal-build"
+// gulp.task("full-unreal-build", gulp.series("clear", "pull", "build-unreal"));
+
+gulp.task(
+    "full-unity-build", 
+    gulp.series(
+        "clear", 
+        "pull", 
+        "build-unity",
+        "compress-builds",
+        "upload",
+    )
+);
 
 
 
@@ -188,11 +211,4 @@ gulp.task("upload", async (done) => {
 
 // gulp.task("default", gulp.series("clear", "pull", "build-unity"));
 // gulp.task("default", gulp.series("rebuild"));
-gulp.task("default", gulp.series("upload"));
-
-
-
-
-// cli: gulp "full-unity-build"
-// cli: gulp "full-unreal-build"
-// gulp.task("full-unreal-build", gulp.series("clear", "pull", "build-unreal"));
+// gulp.task("default", gulp.series("upload"));
