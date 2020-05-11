@@ -14,7 +14,7 @@ const BuildData = require("./lib/BuildData.js");
 BuildData.PROJECT_DEST_PATH = PROJECT_DEST_PATH;
 BuildData.GAME_NAME = GAME_NAME;
 
-let buildData = {
+let buildPlatformData = {
     windows: new BuildData({ name: "Windows" }),
     osx: new BuildData({ name: "OSX" }),
     linux: new BuildData({ name: "Linux" }),
@@ -78,17 +78,18 @@ gulp.task("pull", done => {
 // NOTE: all teams may not want the 3 builds
 /// https://docs.unity3d.com/Manual/CommandLineArguments.html
 gulp.task("build-unity", done => {
+    // TODO: convert to for loop
     runCmd(done, 
         `"${UnityPath}" -quit -batchmode -logFile stdout.log `+
         `-projectPath "%cd%\\${PROJECT_SOURCE_PATH}" `+
-        `-buildWindows64Player "%cd%\\${buildData.windows.exePath}" `+
-        `-buildOSXUniversalPlayer "%cd%\\${buildData.osx.exePath}" `+
-        `-buildLinux64Player "%cd%\\${buildData.linux.exePath}"`
+        `-buildWindows64Player "%cd%\\${buildPlatformData.windows.exePath}" `+
+        `-buildOSXUniversalPlayer "%cd%\\${buildPlatformData.osx.exePath}" `+
+        `-buildLinux64Player "%cd%\\${buildPlatformData.linux.exePath}"`
     )
 });
 
 gulp.task("build-unreal", done => {
-    // TODO: ask Rohit
+    // TODO: add rohit implementation
 });
 
 gulp.task("rebuild-unity", gulp.series("clear-dest", "build-unity"));
@@ -106,20 +107,26 @@ const path = require("path")
 
 gulp.task("compress-builds", (done) => {
 
-    console.log(`${buildData.windows.zipPath} |||||||| ${path.join(__dirname, path.dirname(buildData.windows.exePath), "\\*")}`);
 
-    const myStream = node7z.add(buildData.windows.zipPath, path.join(__dirname, path.dirname(buildData.windows.exePath), "\\*"), {
-        recursive: false, /// this adds things from subfolders
-        $progress: true, /// sends progress events
-        $bin: bin7z, /// reference to 7z
-    })
+    // creates the zip folder stream
+    const myStream = node7z.add(
+        buildPlatformData.windows.zipPath,  /// zip dest
+        path.join(__dirname, path.dirname(buildPlatformData.windows.exePath), "\\*"),  /// exe folder source
+        
+        // options
+        {
+            recursive: false, /// this seems to have unintuitive behaviour, but false gets desired result
+            $progress: true, /// sends progress events
+            $bin: bin7z, /// reference to 7z
+        }
+    )
     
-
+    // progress updates
     myStream.on('progress', function (progress) {
         console.log(`zip progress: ${progress.percent}`); /// { percent: 67, fileCount: 5, file: undefinded }
     })
 
-
+    // when finished
     myStream.on('end', function () {    
         console.log(`zip complete`);
         done();
