@@ -10,15 +10,15 @@ const PROJECT_SOURCE_PATH = "project-src";
 const PROJECT_DEST_PATH = `project-dest`;
 
 
+const BuildData = require("./lib/BuildData.js");
+BuildData.PROJECT_DEST_PATH = PROJECT_DEST_PATH;
+BuildData.GAME_NAME = GAME_NAME;
 
-
-const WINDOWS_EXE_PATH = `${PROJECT_DEST_PATH}\\Windows\\${GAME_NAME}.exe`;
-const OSX_EXE_PATH = `${PROJECT_DEST_PATH}\\Mac\\${GAME_NAME}.exe`;
-const LINUX_EXE_PATH = `${PROJECT_DEST_PATH}\\Linux\\${GAME_NAME}.exe`;
-
-const WINDOWS_BUILD_ZIP_PATH = `${PROJECT_DEST_PATH}\\Compressed\\Windows\\${GAME_NAME}.zip`;
-const OSX_BUILD_ZIP_PATH = `${PROJECT_DEST_PATH}\\Compressed\\Mac\\${GAME_NAME}.zip`;
-const LINUX_BUILD_ZIP_PATH = `${PROJECT_DEST_PATH}\\Compressed\\Linux\\${GAME_NAME}.zip`;
+let buildData = {
+    windows: new BuildData({ name: "Windows" }),
+    osx: new BuildData({ name: "OSX" }),
+    linux: new BuildData({ name: "Linux" }),
+}
 
 const GitUrl = "https://github.com/vfs-sct/Afloat";
 const TargetBranch = "develop";
@@ -81,9 +81,9 @@ gulp.task("build-unity", done => {
     runCmd(done, 
         `"${UnityPath}" -quit -batchmode -logFile stdout.log `+
         `-projectPath "%cd%\\${PROJECT_SOURCE_PATH}" `+
-        `-buildWindows64Player "%cd%\\${WINDOWS_EXE_PATH}" `+
-        `-buildOSXUniversalPlayer "%cd%\\${OSX_EXE_PATH}" `+
-        `-buildLinux64Player "%cd%\\${LINUX_EXE_PATH}"`
+        `-buildWindows64Player "%cd%\\${buildData.windows.exePath}" `+
+        `-buildOSXUniversalPlayer "%cd%\\${buildData.osx.exePath}" `+
+        `-buildLinux64Player "%cd%\\${buildData.linux.exePath}"`
     )
 });
 
@@ -106,7 +106,9 @@ const path = require("path")
 
 gulp.task("compress-builds", (done) => {
 
-    const myStream = node7z.add(WINDOWS_BUILD_ZIP_PATH, path.join(__dirname, path.dirname(WINDOWS_EXE_PATH), "\\*"), {
+    console.log(`${buildData.windows.zipPath} |||||||| ${path.join(__dirname, path.dirname(buildData.windows.exePath), "\\*")}`);
+
+    const myStream = node7z.add(buildData.windows.zipPath, path.join(__dirname, path.dirname(buildData.windows.exePath), "\\*"), {
         recursive: false, /// this adds things from subfolders
         $progress: true, /// sends progress events
         $bin: bin7z, /// reference to 7z
