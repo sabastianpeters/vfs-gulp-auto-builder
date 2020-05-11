@@ -108,29 +108,35 @@ const path = require("path")
 gulp.task("compress-builds", (done) => {
 
 
-    // creates the zip folder stream
-    const myStream = node7z.add(
-        buildPlatformData.windows.zipPath,  /// zip dest
-        path.join(__dirname, path.dirname(buildPlatformData.windows.exePath), "\\*"),  /// exe folder source
+    for(let key in buildPlatformData){
+        let platformData = buildPlatformData[key];
         
-        // options
-        {
-            recursive: false, /// this seems to have unintuitive behaviour, but false gets desired result
-            $progress: true, /// sends progress events
-            $bin: bin7z, /// reference to 7z
-        }
-    )
-    
-    // progress updates
-    myStream.on('progress', function (progress) {
-        console.log(`zip progress: ${progress.percent}`); /// { percent: 67, fileCount: 5, file: undefinded }
-    })
+        // creates the zip folder stream
+        const myStream = node7z.add(
 
-    // when finished
-    myStream.on('end', function () {    
-        console.log(`zip complete`);
-        done();
-    })
+            platformData.zipPath,  /// zip dest
+            path.join(__dirname, path.dirname(platformData.exePath), "\\*"),  /// exe folder source
+            
+            // options
+            {
+                recursive: false, /// this seems to have unintuitive behaviour, but false gets desired result
+                $progress: true, /// sends progress events
+                $bin: bin7z, /// reference to 7z
+            }
+        )
+        
+
+        // progress updates
+        myStream.on('progress', function (progress) {
+            console.log(`zip progress: ${progress.percent}`); /// { percent: 67, fileCount: 5, file: undefinded }
+        })
+
+        // when finished
+        myStream.on('end', function () {    
+            console.log(`zip complete`);
+            done();
+        })
+    }
 
 });
 
