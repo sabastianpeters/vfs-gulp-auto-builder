@@ -22,7 +22,8 @@ let buildPlatformData = {
 
 const GitUrl = "https://github.com/vfs-sct/Afloat";
 const TargetBranch = "develop";
-const UnityPath = `C:\\Program Files\\Unity Editors\\${UNITY_VERSION}\\Editor\\Unity.exe`;
+// const UnityPath = `C:\\Program Files\\Unity Editors\\${UNITY_VERSION}\\Editor\\Unity.exe`; /// home
+const UnityPath = `C:\\Program Files\\Unity\\Hub\\Editor\\${UNITY_VERSION}\\Editor\\Unity.exe`; /// vfs
 
 
 
@@ -190,8 +191,11 @@ gulp.task("upload", async (done) => {
 // ## FULL BUILD PROCESSES ##
 
 
+// local cli: .\node_modules\.bin\gulp full-unity-build
+
 // cli: gulp "full-unity-build"
 // cli: gulp "full-unreal-build"
+
 // gulp.task("full-unreal-build", gulp.series("clear", "pull", "build-unreal"));
 
 gulp.task(
