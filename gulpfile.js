@@ -78,7 +78,7 @@ gulp.task("pull", done => {
 
 // NOTE: all teams may not want the 3 builds
 /// https://docs.unity3d.com/Manual/CommandLineArguments.html
-gulp.task("build-unity", done => {
+gulp.task("build-unity", async (done) => {
 
 
     buildPlatformData.windows.unityBuildParam = "buildWindows64Player";
@@ -89,12 +89,24 @@ gulp.task("build-unity", done => {
     // builds it for each platform
     for(let key in buildPlatformData){
         let platformData = buildPlatformData[key];
+        
+        console.log(`starting build for ${platformData.name}`);
 
-        runCmd(done, 
-            `"${UnityPath}" -quit -batchmode -logFile stdout.log `+
-            `-projectPath "%cd%\\${PROJECT_SOURCE_PATH}" `+
-            `-${platformData.unityBuildParam} "%cd%\\${platformData.exePath}"`
-        )
+        // waits for each build to finish
+        await new Promise((res, rej) => {
+
+            let done = (err) => {
+                if(err) rej(err);
+                else res();
+                console.log(`finished build for ${platformData.name}`);
+            }
+
+            runCmd(done, 
+                `"${UnityPath}" -quit -batchmode -logFile stdout.log `+
+                `-projectPath "%cd%\\${PROJECT_SOURCE_PATH}" `+
+                `-${platformData.unityBuildParam} "%cd%\\${platformData.exePath}"`
+            )
+        });
     }
 });
 
@@ -162,7 +174,7 @@ const gDrive = require('./lib/GoogleDrive.js')
 const gDriveTools = require('./lib/GoogleDriveTools.js')
 
 
-gulp.task("upload", async (done) => {
+gulp.task("upload-compressed-builds", async (done) => {
     
     // Authorize client (must be done from pre)
     let credentials = await gAuth.loadCredentials();
@@ -195,6 +207,9 @@ gulp.task("upload", async (done) => {
 })
 
 
+gulp.task("upload", gulp.series("compress-builds", "upload-compressed-builds");
+
+
 
 
 // ## FULL BUILD PROCESSES ##
@@ -213,7 +228,6 @@ gulp.task(
         "clear", 
         "pull", 
         "build-unity",
-        "compress-builds",
         "upload",
     )
 );
