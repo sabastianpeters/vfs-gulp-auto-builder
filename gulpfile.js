@@ -17,7 +17,7 @@ BuildData.GAME_NAME = GAME_NAME;
 let buildPlatformData = {
     windows: new BuildData({ name: "Windows" }),
     osx: new BuildData({ name: "OSX" }),
-    linux: new BuildData({ name: "Linux" }),
+    // linux: new BuildData({ name: "Linux" }),
 }
 
 const GitUrl = "https://github.com/vfs-sct/Afloat";
@@ -79,14 +79,23 @@ gulp.task("pull", done => {
 // NOTE: all teams may not want the 3 builds
 /// https://docs.unity3d.com/Manual/CommandLineArguments.html
 gulp.task("build-unity", done => {
-    // TODO: convert to for loop
-    runCmd(done, 
-        `"${UnityPath}" -quit -batchmode -logFile stdout.log `+
-        `-projectPath "%cd%\\${PROJECT_SOURCE_PATH}" `+
-        `-buildWindows64Player "%cd%\\${buildPlatformData.windows.exePath}" `+
-        `-buildOSXUniversalPlayer "%cd%\\${buildPlatformData.osx.exePath}" `+
-        `-buildLinux64Player "%cd%\\${buildPlatformData.linux.exePath}"`
-    )
+
+
+    buildPlatformData.windows.unityBuildParam = "buildWindows64Player";
+    buildPlatformData.osx.unityBuildParam = "buildOSXUniversalPlayer";
+    // buildPlatformData.linux.unityBuildParam = "buildLinux64Player";
+    
+
+    // builds it for each platform
+    for(let key in buildPlatformData){
+        let platformData = buildPlatformData[key];
+
+        runCmd(done, 
+            `"${UnityPath}" -quit -batchmode -logFile stdout.log `+
+            `-projectPath "%cd%\\${PROJECT_SOURCE_PATH}" `+
+            `-${platformData.unityBuildParam} "%cd%\\${platformData.exePath}"`
+        )
+    }
 });
 
 gulp.task("build-unreal", done => {
@@ -164,7 +173,7 @@ gulp.task("upload", async (done) => {
     // defines google file id on the fly
     buildPlatformData.windows.googleFileId = "1PPjKp-1yw6eTM6bnnRcPBKkOWQ2hB0ap";
     buildPlatformData.osx.googleFileId = "1GuoZSz6WAitbp_N1k78jkhyIkLwwDYW3";
-    buildPlatformData.linux.googleFileId = "1NTMBFaYvHf62ZQVMUOCctpunmJOEbAll";
+    // buildPlatformData.linux.googleFileId = "1NTMBFaYvHf62ZQVMUOCctpunmJOEbAll";
 
     
     // loops through each build and uploads it to target file
