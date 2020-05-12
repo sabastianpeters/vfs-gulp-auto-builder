@@ -116,3 +116,5 @@ project-dest/
 credentials.json
 
 token.json
+
+config.git.js

@@ -20,7 +20,8 @@ let buildPlatformData = {
     // linux: new BuildData({ name: "Linux" }),
 }
 
-const GitUrl = "https://github.com/vfs-sct/Afloat";
+const GIT_CONFIG = require("./config.git.js");
+const GitUrl = `https://${GIT_CONFIG.username}:${GIT_CONFIG.password}@github.com/vfs-sct/Afloat.git`;
 const TargetBranch = "develop";
 // const UnityPath = `C:\\Program Files\\Unity Editors\\${UNITY_VERSION}\\Editor\\Unity.exe`; /// home
 const UnityPath = `C:\\Program Files\\Unity\\Hub\\Editor\\${UNITY_VERSION}\\Editor\\Unity.exe`; /// vfs

@@ -7,8 +7,22 @@
 - in project folder:
   - `npm install`
 
+### GitHub Auth Setup
+- goto your github profile's settings page
+- goto developer settings
+- goto Personal Access Token
+- create a token with full `repo` and `gist` privelages
+- create file `config.git.js` in project root
+- add the following content:
+  ```javascript
+  module.exports = {
+      username: "YOUR USERNAME HERE",
+      password: "YOUR PERSONAL ACCESS TOKEN HERE"
+  };
+  ```
 
-### Auth Setup
+
+### Google Auth Setup
 
 - Goto your [Google API Console Credentials Screen](https://console.developers.google.com/apis/credentials/)
 - choose to make a OAuth credentials with: `Create Credentials > OAuth client ID`
