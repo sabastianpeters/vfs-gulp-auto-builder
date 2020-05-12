@@ -207,7 +207,7 @@ gulp.task("upload-compressed-builds", async (done) => {
 })
 
 
-gulp.task("upload", gulp.series("compress-builds", "upload-compressed-builds");
+gulp.task("upload", gulp.series("compress-builds", "upload-compressed-builds"));
 
 
 
