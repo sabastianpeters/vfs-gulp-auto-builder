@@ -1,4 +1,7 @@
 
+// ! NOTE: CLEARING THE SOURCE FOR UNITY WILL REQUIRE TMPRO AND PHOTON TO BE RE-IMPORTED.
+// ! THE CLI CANNOT DO THIS, AND THEREFOR THE BUILD WILL BREAK
+
 const gulp = require("gulp");
 const gulpExec = require("gulp-exec");
 const exec = require('child_process').exec;
@@ -65,8 +68,18 @@ gulp.task("clear", gulp.parallel(["clear-src", "clear-dest"]));
 
 // ## SOURCE CONTROL TASKS ##
 
-gulp.task("pull", done => {
+gulp.task("clone", done => {
     runCmd(done, `git clone -b ${TargetBranch} ${GitUrl} "${PROJECT_SOURCE_PATH}"`)
+});
+
+gulp.task("pull", done => {
+    // runCmd(done, `cd ${PROJECT_SOURCE_PATH} && git pull origin ${TargetBranch}`)
+    // thanks: https://stackoverflow.com/questions/1125968/how-do-i-force-git-pull-to-overwrite-local-files
+    runCmd(done, 
+        `cd ${PROJECT_SOURCE_PATH} && `+
+        `git fetch --all && `+ /// downloads the latest from remote without trying to merge or rebase anythin
+        `git reset --hard origin/${TargetBranch}` ///  resets the master branch to what you just fetched. The --hard option changes all the files in your working tree to match the files in origin/master
+    )
 });
 
 
@@ -99,7 +112,7 @@ gulp.task("build-unity", async (done) => {
             let done = (err) => {
                 if(err) rej(err);
                 else res();
-                console.log(`finished build for ${platformData.name}`);
+                console.log(`finished build for ${platformData.targetPlatform.name}`);
             }
 
             runCmd(done, 
@@ -226,7 +239,7 @@ gulp.task("upload", gulp.series("compress-builds", "upload-compressed-builds"));
 gulp.task(
     "full-unity-build", 
     gulp.series(
-        "clear", 
+        "clear-dest",  
         "pull", 
         "build-unity",
         "upload",
