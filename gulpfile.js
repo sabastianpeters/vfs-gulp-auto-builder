@@ -91,7 +91,7 @@ gulp.task("build-unity", async (done) => {
     for(let key in buildPlatformData){
         let platformData = buildPlatformData[key];
         
-        console.log(`starting build for ${platformData.name}`);
+        console.log(`starting build for ${platformData.targetPlatform.name}`);
 
         // waits for each build to finish
         await new Promise((res, rej) => {
