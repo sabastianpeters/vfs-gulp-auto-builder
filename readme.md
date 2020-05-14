@@ -46,11 +46,16 @@
 ![3](./readme-assets/task-schedueller-3.png)
 ![4](./readme-assets/task-schedueller-4.png)
 ![5](./readme-assets/task-schedueller-5.png)
-> ^ NOTE: this image is incorrect. we need to create a file called `build.cmd` with the contents `gulp full-unity-build`
+> ^ NOTE: this image is incorrect.
 > 
-> this will the start path is the location where Task Scheduler will run the provided command. Select the path of the builder with "Browse" and copy-past the path to the "Start in" field
+> - `Program/script`: `"cmd.exe"`
+> - `Add arguments (optional)`: `/c ".\node_modules\.bin\gulp full-unity-build"`
+> - `Start In`: path of the folder with the gulp script
+>   - ie. if `a/b/c/gulpfile.js` is the path to the gulpfile, put `a/b/c` in this field
+> 
+> This runs a new *Command Prompt* that will run our gulp build script
 >
-> as well, if building with unreal, do a "full-unreal-build" instead of unity
+> If building with unreal, do a "full-unreal-build" instead of unity
 
 
 ![6](./readme-assets/task-schedueller-6.png)
