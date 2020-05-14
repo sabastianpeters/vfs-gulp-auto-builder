@@ -59,3 +59,9 @@
 
 
 ![6](./readme-assets/task-schedueller-6.png)
+
+### Example Output
+
+![0](./readme-assets/example-output-0.png)
+![1](./readme-assets/example-output-1.png)
+![2](./readme-assets/example-output-2.png)
