@@ -6,6 +6,8 @@
 - ensure you have the right version of your game engine install for builds 
 - in project folder:
   - `npm install`
+- `git lfs install`
+  - this [needs to be run once per user account per computer](https://git-lfs.github.com/)
 
 ### GitHub Auth Setup
 - goto your github profile's settings page
