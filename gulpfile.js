@@ -12,6 +12,10 @@ const GAME_NAME = "Project Afloat"
 const PROJECT_SOURCE_PATH = "project-src";
 const PROJECT_DEST_PATH = `project-dest`;
 
+const NATURAL_DOC_EXE = ".\\bin\\NaturalDocs\\NaturalDocs.exe"
+const PROJECT_DOCS_DEST_PATH = `project-docs`;
+const PROJECT_DOCS_CONFIG_PATH = `natural-docs-config`;
+
 
 const BuildData = require("./lib/BuildData.js");
 BuildData.PROJECT_DEST_PATH = PROJECT_DEST_PATH;
@@ -130,6 +134,28 @@ gulp.task("build-unreal", done => {
 
 gulp.task("rebuild-unity", gulp.series("clear-dest", "build-unity"));
 gulp.task("rebuild-unreal", gulp.series("clear-dest", "build-unreal"));
+
+
+
+
+
+
+// ## BUILD DOCUMENTATION TASKS ##
+
+gulp.task("docs-init", done => {
+    runCmd(done, `${NATURAL_DOC_EXE} "${path.join(__dirname, PROJECT_DOCS_CONFIG_PATH)}"`)
+})
+
+gulp.task("docs-build", done => {
+    runCmdNoError(done, `mkdir ${PROJECT_DOCS_DEST_PATH}`);
+    runCmd(done, 
+        `"${NATURAL_DOC_EXE}" `+
+        `-i "%cd%\\${PROJECT_SOURCE_PATH}\\Assets" `+
+        `-p "%cd%\\${PROJECT_DOCS_CONFIG_PATH}" `+
+        `-o HTML "%cd%\\${PROJECT_DOCS_DEST_PATH}"`
+    )
+})
+
 
 
 
