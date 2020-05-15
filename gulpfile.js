@@ -167,9 +167,11 @@ gulp.task("docs-init", async done => {
 
 gulp.task("docs-build", async done => {
     await runCmdPromise(`"${NATURAL_DOC_EXE}" `+
-        `-i "%cd%\\${PROJECT_SOURCE_PATH}\\Assets" `+
-        `-p "%cd%\\${PROJECT_DOCS_CONFIG_PATH}\\Project.txt" `+
-        `-o HTML "%cd%\\${PROJECT_DOCS_DEST_PATH}"`
+        `-i "%cd%\\${PROJECT_SOURCE_PATH}\\Assets" `+ /// source path
+        `-xi "%cd%\\${PROJECT_SOURCE_PATH}\\Assets\\Wwise" `+ /// ignore these
+        `-xi "%cd%\\${PROJECT_SOURCE_PATH}\\Assets\\Photon" `+ /// ignore these
+        `-p "%cd%\\${PROJECT_DOCS_CONFIG_PATH}\\Project.txt" `+ /// config path
+        `-o HTML "%cd%\\${PROJECT_DOCS_DEST_PATH}"` /// dest path
     )
     done();
 })
@@ -182,6 +184,7 @@ gulp.task("docs-upload", async done => {
     )
 });
 
+gulp.task("full-docs-build", gulp.series("docs-build", "docs-upload"))
 
 
 
@@ -295,6 +298,7 @@ gulp.task(
         "pull", 
         "build-unity",
         "upload",
+        "full-docs-build"
     )
 );
 

@@ -8,22 +8,12 @@
 # Project Information
 # ------------------------------------------------------------------------
 
-# This is where you specify general information about your project.
-#
-# Title: [text]
-#    The name of your project.  (R) and (TM) will be converted to their
-#    respective symbols.
-#
-# Subtitle: [text]
-#    A subtitle for your project.
-#
-# Copyright: [text]
-#    The copyright notice for your project.  (C) will be converted to the
-#    copyright symbol.
-#
-# Timestamp: [text]
-#    Text explaining when the documentation was generated.  The following
-#    substitutions are performed:
+Title: PROJECT AFLOAT
+Subtitle: bring back an abandoned city in the clouds
+
+Copyright: Copyright © 2020 Team Triple Double
+
+Timestamp: Last updated mon day year
 #    m     - Single digit month, when possible.  January is "1".
 #    mm    - Always double digit month.  January is "01".
 #    mon   - Short month word.  January is "Jan".
@@ -34,16 +24,15 @@
 #    yy    - Double digit year.  2017 is "17".
 #    yyyy  - Four digit year.  2017 is "2017".
 #    year  - Four digit year.  2017 is "2017".
+
+
+# This is where you specify general information about your project.
 #
 # Style: [style]
 #    The style to apply to the generated documentation.  It can be the name of
 #    a CSS file in the project configuration folder or a subfolder that
 #    contains Style.txt.  Do not include ".css" if using a CSS file.
 
-Title: PROJECT AFLOAT
-Subtitle: bring back an abandoned city in the clouds
-Copyright: Copyright (C) 2020 Team Triple Double
-Timestamp: Last updated mon day year
 
 # Source Code
 # ------------------------------------------------------------------------
@@ -72,11 +61,16 @@ Source Folder: ..\project-src\Assets
 # Source Filtering
 # ------------------------------------------------------------------------
 
+Ignore Source Folder: ..\project-src\Assets\Wwise
+
+Ignore Source Folder: ..\project-src\Assets\Photon
+
+
 # If there are any subfolders in the source code that you would like Natural
 # Docs to ignore, they can be specified here.  If you use any of these options
 # on the command line, this entire section is ignored.
 #
-# Ignore Source Folder: [text]
+# Ignore Source Folder: [path]
 #    Tells Natural Docs to skip this folder when scanning files.
 #
 # Ignore Source Folder Pattern: [pattern]
@@ -87,9 +81,6 @@ Source Folder: ..\project-src\Assets
 #
 #    The data folders of common version control systems (.git, .svn, .cvs, .hg)
 #    are ignored automatically.  You do not have to specify them here.
-
-Ignore Source Folder: Wwise
-Ignore Source Folder: Photon
 
 
 # Generated Documentation
