@@ -6,9 +6,25 @@
 - ensure you have the right version of your game engine install for builds 
 - in project folder:
   - `npm install`
+- `git lfs install`
+  - this [needs to be run once per user account per computer](https://git-lfs.github.com/)
+
+### GitHub Auth Setup
+- goto your github profile's settings page
+- goto developer settings
+- goto Personal Access Token
+- create a token with full `repo` and `gist` privelages
+- create file `config.git.js` in project root
+- add the following content:
+  ```javascript
+  module.exports = {
+      username: "YOUR USERNAME HERE",
+      password: "YOUR PERSONAL ACCESS TOKEN HERE"
+  };
+  ```
 
 
-### Auth Setup
+### Google Auth Setup
 
 - Goto your [Google API Console Credentials Screen](https://console.developers.google.com/apis/credentials/)
 - choose to make a OAuth credentials with: `Create Credentials > OAuth client ID`
@@ -30,9 +46,22 @@
 ![3](./readme-assets/task-schedueller-3.png)
 ![4](./readme-assets/task-schedueller-4.png)
 ![5](./readme-assets/task-schedueller-5.png)
-> ^ NOTE: the start path is the location where Task Scheduler will run the provided command. Select the path of the builder with "Browse" and copy-past the path to the "Start in" field
+> ^ NOTE: this image is incorrect.
+> 
+> - `Program/script`: `"cmd.exe"`
+> - `Add arguments (optional)`: `/c ".\node_modules\.bin\gulp full-unity-build"`
+> - `Start In`: path of the folder with the gulp script
+>   - ie. if `a/b/c/gulpfile.js` is the path to the gulpfile, put `a/b/c` in this field
+> 
+> This runs a new *Command Prompt* that will run our gulp build script
 >
-> as well, if building with unreal, do a "full-unreal-build" instead of unity
+> If building with unreal, do a "full-unreal-build" instead of unity
 
 
 ![6](./readme-assets/task-schedueller-6.png)
+
+### Example Output
+
+![0](./readme-assets/example-output-0.png)
+![1](./readme-assets/example-output-1.png)
+![2](./readme-assets/example-output-2.png)

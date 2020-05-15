@@ -1,4 +1,7 @@
 
+// ! NOTE: CLEARING THE SOURCE FOR UNITY WILL REQUIRE TMPRO AND PHOTON TO BE RE-IMPORTED.
+// ! THE CLI CANNOT DO THIS, AND THEREFOR THE BUILD WILL BREAK
+
 const gulp = require("gulp");
 const gulpExec = require("gulp-exec");
 const exec = require('child_process').exec;
@@ -17,12 +20,14 @@ BuildData.GAME_NAME = GAME_NAME;
 let buildPlatformData = {
     windows: new BuildData({ name: "Windows" }),
     osx: new BuildData({ name: "OSX" }),
-    linux: new BuildData({ name: "Linux" }),
+    // linux: new BuildData({ name: "Linux" }),
 }
 
-const GitUrl = "https://github.com/vfs-sct/Afloat";
+const GIT_CONFIG = require("./config.git.js");
+const GitUrl = `https://${GIT_CONFIG.username}:${GIT_CONFIG.password}@github.com/vfs-sct/Afloat.git`;
 const TargetBranch = "develop";
-const UnityPath = `C:\\Program Files\\Unity Editors\\${UNITY_VERSION}\\Editor\\Unity.exe`;
+// const UnityPath = `C:\\Program Files\\Unity Editors\\${UNITY_VERSION}\\Editor\\Unity.exe`; /// home
+const UnityPath = `C:\\Program Files\\Unity\\Hub\\Editor\\${UNITY_VERSION}\\Editor\\Unity.exe`; /// vfs
 
 
 
@@ -63,8 +68,18 @@ gulp.task("clear", gulp.parallel(["clear-src", "clear-dest"]));
 
 // ## SOURCE CONTROL TASKS ##
 
-gulp.task("pull", done => {
+gulp.task("clone", done => {
     runCmd(done, `git clone -b ${TargetBranch} ${GitUrl} "${PROJECT_SOURCE_PATH}"`)
+});
+
+gulp.task("pull", done => {
+    // runCmd(done, `cd ${PROJECT_SOURCE_PATH} && git pull origin ${TargetBranch}`)
+    // thanks: https://stackoverflow.com/questions/1125968/how-do-i-force-git-pull-to-overwrite-local-files
+    runCmd(done, 
+        `cd ${PROJECT_SOURCE_PATH} && `+
+        `git fetch --all && `+ /// downloads the latest from remote without trying to merge or rebase anythin
+        `git reset --hard origin/${TargetBranch}` ///  resets the master branch to what you just fetched. The --hard option changes all the files in your working tree to match the files in origin/master
+    )
 });
 
 
@@ -77,15 +92,36 @@ gulp.task("pull", done => {
 
 // NOTE: all teams may not want the 3 builds
 /// https://docs.unity3d.com/Manual/CommandLineArguments.html
-gulp.task("build-unity", done => {
-    // TODO: convert to for loop
-    runCmd(done, 
-        `"${UnityPath}" -quit -batchmode -logFile stdout.log `+
-        `-projectPath "%cd%\\${PROJECT_SOURCE_PATH}" `+
-        `-buildWindows64Player "%cd%\\${buildPlatformData.windows.exePath}" `+
-        `-buildOSXUniversalPlayer "%cd%\\${buildPlatformData.osx.exePath}" `+
-        `-buildLinux64Player "%cd%\\${buildPlatformData.linux.exePath}"`
-    )
+gulp.task("build-unity", async (done) => {
+
+
+    buildPlatformData.windows.unityBuildParam = "buildWindows64Player";
+    buildPlatformData.osx.unityBuildParam = "buildOSXUniversalPlayer";
+    // buildPlatformData.linux.unityBuildParam = "buildLinux64Player";
+    
+
+    // builds it for each platform
+    for(let key in buildPlatformData){
+        let platformData = buildPlatformData[key];
+        
+        console.log(`starting build for ${platformData.targetPlatform.name}`);
+
+        // waits for each build to finish
+        await new Promise((res, rej) => {
+
+            let done = (err) => {
+                if(err) rej(err);
+                else res();
+                console.log(`finished build for ${platformData.targetPlatform.name}`);
+            }
+
+            runCmd(done, 
+                `"${UnityPath}" -quit -batchmode -logFile stdout.log `+
+                `-projectPath "%cd%\\${PROJECT_SOURCE_PATH}" `+
+                `-${platformData.unityBuildParam} "%cd%\\${platformData.exePath}"`
+            )
+        });
+    }
 });
 
 gulp.task("build-unreal", done => {
@@ -152,7 +188,7 @@ const gDrive = require('./lib/GoogleDrive.js')
 const gDriveTools = require('./lib/GoogleDriveTools.js')
 
 
-gulp.task("upload", async (done) => {
+gulp.task("upload-compressed-builds", async (done) => {
     
     // Authorize client (must be done from pre)
     let credentials = await gAuth.loadCredentials();
@@ -163,7 +199,7 @@ gulp.task("upload", async (done) => {
     // defines google file id on the fly
     buildPlatformData.windows.googleFileId = "1PPjKp-1yw6eTM6bnnRcPBKkOWQ2hB0ap";
     buildPlatformData.osx.googleFileId = "1GuoZSz6WAitbp_N1k78jkhyIkLwwDYW3";
-    buildPlatformData.linux.googleFileId = "1NTMBFaYvHf62ZQVMUOCctpunmJOEbAll";
+    // buildPlatformData.linux.googleFileId = "1NTMBFaYvHf62ZQVMUOCctpunmJOEbAll";
 
     
     // loops through each build and uploads it to target file
@@ -185,22 +221,27 @@ gulp.task("upload", async (done) => {
 })
 
 
+gulp.task("upload", gulp.series("compress-builds", "upload-compressed-builds"));
+
+
 
 
 // ## FULL BUILD PROCESSES ##
 
 
+// local cli: .\node_modules\.bin\gulp full-unity-build
+
 // cli: gulp "full-unity-build"
 // cli: gulp "full-unreal-build"
+
 // gulp.task("full-unreal-build", gulp.series("clear", "pull", "build-unreal"));
 
 gulp.task(
     "full-unity-build", 
     gulp.series(
-        "clear", 
+        "clear-dest",  
         "pull", 
         "build-unity",
-        "compress-builds",
         "upload",
     )
 );
