@@ -12,6 +12,10 @@ const GAME_NAME = "Project Afloat"
 const PROJECT_SOURCE_PATH = "project-src";
 const PROJECT_DEST_PATH = `project-dest`;
 
+const NATURAL_DOC_EXE = ".\\bin\\NaturalDocs\\NaturalDocs.exe"
+const PROJECT_DOCS_DEST_PATH = `project-docs`;
+const PROJECT_DOCS_CONFIG_PATH = `natural-docs-config`;
+
 
 const BuildData = require("./lib/BuildData.js");
 BuildData.PROJECT_DEST_PATH = PROJECT_DEST_PATH;
@@ -24,6 +28,7 @@ let buildPlatformData = {
 }
 
 const GIT_CONFIG = require("./config.git.js");
+const DocumentationGitUrl = `https://${GIT_CONFIG.username}:${GIT_CONFIG.password}@github.com/vfs-sct/Afloat-Code-Documentation.git`;
 const GitUrl = `https://${GIT_CONFIG.username}:${GIT_CONFIG.password}@github.com/vfs-sct/Afloat.git`;
 const TargetBranch = "develop";
 // const UnityPath = `C:\\Program Files\\Unity Editors\\${UNITY_VERSION}\\Editor\\Unity.exe`; /// home
@@ -33,8 +38,10 @@ const UnityPath = `C:\\Program Files\\Unity\\Hub\\Editor\\${UNITY_VERSION}\\Edit
 
 // ## UTIL ##
 
-function runCmdNoError (done, cmd)
-{
+function runCmdNoErrorPromise (cmd){ return new Promise ((resolve, reject) => {
+    runCmdNoError(resolve, cmd);
+})}
+function runCmdNoError (done, cmd){
     exec(cmd, function(err, stdout, stderr){
         console.log(stdout);
         console.log(stderr);
@@ -42,6 +49,12 @@ function runCmdNoError (done, cmd)
     })
 }
 
+function runCmdPromise (cmd){ return new Promise ((resolve, reject) => {
+    runCmdNoError((err) => {
+        if(err == undefined) resolve();
+        else reject(err);
+    }, cmd);
+})}
 function runCmd (done, cmd)
 {
     exec(cmd, function (err, stdout, stderr) {
@@ -130,6 +143,48 @@ gulp.task("build-unreal", done => {
 
 gulp.task("rebuild-unity", gulp.series("clear-dest", "build-unity"));
 gulp.task("rebuild-unreal", gulp.series("clear-dest", "build-unreal"));
+
+
+
+
+
+
+// ## BUILD DOCUMENTATION TASKS ##
+
+gulp.task("docs-init", async done => {
+    await runCmdPromise(`${NATURAL_DOC_EXE} "${path.join(__dirname, PROJECT_DOCS_CONFIG_PATH)}"`)
+    await runCmdNoErrorPromise(`mkdir ${PROJECT_DOCS_DEST_PATH}`);
+    await runCmdPromise(`cd ${PROJECT_DOCS_DEST_PATH} && `+
+        `echo # ${GAME_NAME} Code Documentation >> readme.md && `+
+        `git init && `+
+        `git add readme.md && `+
+        `git commit -m "initial commit" && `+
+        `git remote add origin ${DocumentationGitUrl} && `+
+        `git push -u origin master` /// pushes docs, and links remote branch with local
+    );
+    done();
+})
+
+gulp.task("docs-build", async done => {
+    await runCmdPromise(`"${NATURAL_DOC_EXE}" `+
+        `-i "%cd%\\${PROJECT_SOURCE_PATH}\\Assets" `+ /// source path
+        `-xi "%cd%\\${PROJECT_SOURCE_PATH}\\Assets\\Wwise" `+ /// ignore these
+        `-xi "%cd%\\${PROJECT_SOURCE_PATH}\\Assets\\Photon" `+ /// ignore these
+        `-p "%cd%\\${PROJECT_DOCS_CONFIG_PATH}\\Project.txt" `+ /// config path
+        `-o HTML "%cd%\\${PROJECT_DOCS_DEST_PATH}"` /// dest path
+    )
+    done();
+})
+
+gulp.task("docs-upload", async done => {
+    runCmdPromise(`cd ${PROJECT_DOCS_DEST_PATH} && `+
+        `git add . && `+    
+        `git commit -m "auto-generated: documentation" && `+    
+        `git push -u origin master`    
+    )
+});
+
+gulp.task("full-docs-build", gulp.series("docs-build", "docs-upload"))
 
 
 
@@ -243,6 +298,7 @@ gulp.task(
         "pull", 
         "build-unity",
         "upload",
+        "full-docs-build"
     )
 );
 

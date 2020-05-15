@@ -1,6 +1,20 @@
+# Unity Build Tool <!-- omit in toc -->
 
+> Build tool for building Unity games with NaturalDocs documentation. 
+> The game must be hosted on a git repo (Github use case explained here). 
+> Builds are automatically compressed and uploaded to Google Drive after being built.
+> This tool will only run on windows, but can build for Windows, OSX and Linux. 
 
-### Project Setup
+### Table of Contents
+
+- [Project Setup](#project-setup)
+  - [GitHub Auth Setup](#github-auth-setup)
+  - [Google Auth Setup](#google-auth-setup)
+  - [Natural Docs Setup](#natural-docs-setup)
+  - [Task Scheduler Setup](#task-scheduler-setup)
+  - [Example Output](#example-output)
+
+## Project Setup
 
 - `npm install -g gulp-cli`
 - ensure you have the right version of your game engine install for builds 
@@ -33,6 +47,15 @@
 - place this file in the root of this project
 - `npm run auth` to authorize yourself
 
+
+### Natural Docs Setup
+- download the [NaturalDocs zip](https://www.naturaldocs.org/download/)
+- create a folder called `bin` in project root
+- unzip the folder so that `NaturalDocs.exe` is at the path `.\bin\NaturalDocs\NaturalDocs.exe`
+- from this point, the docs should be all setup
+  - if not, init the docs with `.\node_modules\.bin\gulp docs-init`
+- you can customize your project's setting in `.\natural-docs-config\Project.txt`
+- link to [full official guide](https://www.naturaldocs.org/getting_started/getting_set_up/#starting_a_new_project)
 
 
 ### Task Scheduler Setup

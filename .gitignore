@@ -1,5 +1,15 @@
 
-bin/*
+bin/
+project-src/
+project-dest/
+project-docs/
+natural-docs-config/Working Data/
+
+credentials.json
+token.json
+config.git.js
+
+
 
 # Created by https://www.gitignore.io/api/node
 # Edit at https://www.gitignore.io/?templates=node
@@ -111,12 +121,3 @@ tmp/
 temp/
 
 # End of https://www.gitignore.io/api/node
-project-src
-
-project-dest/
-
-credentials.json
-
-token.json
-
-config.git.js
