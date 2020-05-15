@@ -72,8 +72,8 @@ Source Folder: ..\project-src\Assets
 # Docs to ignore, they can be specified here.  If you use any of these options
 # on the command line, this entire section is ignored.
 #
-# Ignore Source Folder: .\Assets\Wwise
-# Ignore Source Folder: .\Assets\Photon
+# Ignore Source Folder: Wwise
+# Ignore Source Folder: Photon
 #    Tells Natural Docs to skip this folder when scanning files.
 #
 # Ignore Source Folder Pattern: [pattern]
