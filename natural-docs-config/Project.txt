@@ -10,18 +10,18 @@
 
 # This is where you specify general information about your project.
 #
-# Title: PROJECT AFLOAT
+# Title: [text]
 #    The name of your project.  (R) and (TM) will be converted to their
 #    respective symbols.
 #
-# Subtitle: bring back an abandoned city in the clouds
+# Subtitle: [text]
 #    A subtitle for your project.
 #
-# Copyright: Copyright (C) 2020 Team Triple Double
+# Copyright: [text]
 #    The copyright notice for your project.  (C) will be converted to the
 #    copyright symbol.
 #
-# Timestamp: mon day year
+# Timestamp: [text]
 #    Text explaining when the documentation was generated.  The following
 #    substitutions are performed:
 #    m     - Single digit month, when possible.  January is "1".
@@ -40,6 +40,10 @@
 #    a CSS file in the project configuration folder or a subfolder that
 #    contains Style.txt.  Do not include ".css" if using a CSS file.
 
+Title: PROJECT AFLOAT
+Subtitle: bring back an abandoned city in the clouds
+Copyright: Copyright (C) 2020 Team Triple Double
+Timestamp: Last updated mon day year
 
 # Source Code
 # ------------------------------------------------------------------------
@@ -72,8 +76,7 @@ Source Folder: ..\project-src\Assets
 # Docs to ignore, they can be specified here.  If you use any of these options
 # on the command line, this entire section is ignored.
 #
-# Ignore Source Folder: Wwise
-# Ignore Source Folder: Photon
+# Ignore Source Folder: [text]
 #    Tells Natural Docs to skip this folder when scanning files.
 #
 # Ignore Source Folder Pattern: [pattern]
@@ -84,6 +87,9 @@ Source Folder: ..\project-src\Assets
 #
 #    The data folders of common version control systems (.git, .svn, .cvs, .hg)
 #    are ignored automatically.  You do not have to specify them here.
+
+Ignore Source Folder: Wwise
+Ignore Source Folder: Photon
 
 
 # Generated Documentation
