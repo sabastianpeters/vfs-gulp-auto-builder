@@ -198,7 +198,9 @@ const path = require("path")
 
 gulp.task("compress-builds", (done) => {
 
-
+    
+    let currentBuildCount = 0;
+    let totalBuildCount = 0;
     for(let key in buildPlatformData){
         let platformData = buildPlatformData[key];
         
@@ -225,8 +227,11 @@ gulp.task("compress-builds", (done) => {
         // when finished
         myStream.on('end', function () {    
             console.log(`zip complete`);
-            done();
+            ++currentBuildCount;
+            if(totalBuildCount == currentBuildCount) done();
         })
+
+        totalBuildCount++;
     }
 
 });
@@ -303,6 +308,11 @@ gulp.task(
 );
 
 
+// gulp
+//     clear-dest  
+//     pull
+//     build-unreal
+//     upload-datastore
 
 // ## DEFAULT TASK (THATS AUTO-RUN)
 
