@@ -130,6 +130,7 @@ gulp.task("build-unity", async (done) => {
 
             runCmd(done, 
                 `"${UnityPath}" -quit -batchmode -logFile stdout.log `+
+                `-profiler-enable `+ /// required for sound designers swap sound banks
                 `-projectPath "%cd%\\${PROJECT_SOURCE_PATH}" `+
                 `-${platformData.unityBuildParam} "%cd%\\${platformData.exePath}"`
             )
