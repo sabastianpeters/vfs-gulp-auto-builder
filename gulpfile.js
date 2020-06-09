@@ -90,7 +90,8 @@ gulp.task("pull", done => {
     // thanks: https://stackoverflow.com/questions/1125968/how-do-i-force-git-pull-to-overwrite-local-files
     runCmd(done, 
         `cd ${PROJECT_SOURCE_PATH} && `+
-        `git fetch --all && `+ /// downloads the latest from remote without trying to merge or rebase anythin
+        `git reset --hard origin/${TargetBranch} && `+ ///  clears any baked files. The --hard option changes all the files in your working tree to match the files in origin/master
+        `git fetch --all && `+ /// downloads the latest from remote without trying to merge or rebase anything
         `git reset --hard origin/${TargetBranch}` ///  resets the master branch to what you just fetched. The --hard option changes all the files in your working tree to match the files in origin/master
     )
 });
