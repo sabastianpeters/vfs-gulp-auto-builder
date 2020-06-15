@@ -23,7 +23,7 @@ BuildData.GAME_NAME = GAME_NAME;
 
 let buildPlatformData = {
     windows: new BuildData({ name: "Windows" }),
-    osx: new BuildData({ name: "OSX" }),
+    // osx: new BuildData({ name: "OSX" }),
     // linux: new BuildData({ name: "Linux" }),
 }
 
@@ -110,7 +110,7 @@ gulp.task("build-unity", async (done) => {
 
 
     buildPlatformData.windows.unityBuildParam = "buildWindows64Player";
-    buildPlatformData.osx.unityBuildParam = "buildOSXUniversalPlayer";
+    // buildPlatformData.osx.unityBuildParam = "buildOSXUniversalPlayer";
     // buildPlatformData.linux.unityBuildParam = "buildLinux64Player";
     
 
@@ -260,7 +260,7 @@ gulp.task("upload-compressed-builds", async (done) => {
     
     // defines google file id on the fly
     buildPlatformData.windows.googleFileId = "1PPjKp-1yw6eTM6bnnRcPBKkOWQ2hB0ap";
-    buildPlatformData.osx.googleFileId = "1GuoZSz6WAitbp_N1k78jkhyIkLwwDYW3";
+    // buildPlatformData.osx.googleFileId = "1GuoZSz6WAitbp_N1k78jkhyIkLwwDYW3";
     // buildPlatformData.linux.googleFileId = "1NTMBFaYvHf62ZQVMUOCctpunmJOEbAll";
 
     
