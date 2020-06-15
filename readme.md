@@ -13,6 +13,7 @@
   - [Natural Docs Setup](#natural-docs-setup)
   - [Task Scheduler Setup](#task-scheduler-setup)
   - [Example Output](#example-output)
+  - [Notes for Next Iteration](#notes-for-next-iteration)
 
 ## Project Setup
 
@@ -88,3 +89,21 @@
 ![0](./readme-assets/example-output-0.png)
 ![1](./readme-assets/example-output-1.png)
 ![2](./readme-assets/example-output-2.png)
+
+
+### Notes for Next Iteration
+
+- Make the build gulpscript seperate from the script that builds for each platform
+  - When the gulp script handles this, if even one of the builds or tests fails, the whole thing comes crashing down
+  - Instead, have once central script that calls a new instance of the build script for each one of the (what Unity calls) Build Targets
+  - This way if one fails, the process may continue
+- Seperate out functions that are Build Target specific (they depend on the build succeding) from ones that arent
+  - For example, no matter which build fails, we still need to (a) pull latest and (b) try to update the code docs
+  - Function that are build dependant are (a) building the exe, (b) zipping the file and (c) uploading the file
+  - There are cases missing, but this is the general idea
+- Create a logs file for some buffer # of days (3?)
+  - When a build goes wrong, it can be difficult to figure out why
+- Make the builder only run based of the master branch on Git
+  - Right now, this builder is based on develop, but never auto-updates
+  - In future, make it based off of master so we know the builds will always work reliably
+  - As well, before we do any building of the games, check to see if there's an update to the builder repo (get latest)
