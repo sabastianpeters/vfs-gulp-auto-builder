@@ -107,3 +107,9 @@
   - Right now, this builder is based on develop, but never auto-updates
   - In future, make it based off of master so we know the builds will always work reliably
   - As well, before we do any building of the games, check to see if there's an update to the builder repo (get latest)
+- Make sure gulp tasks have a consistent naming scheme
+  - ie. "build-unity" and "full-unity-build" are confusing
+  - either do "build-unity" and "build-unity-full" or "full-unity-build" and "unity-build"
+- Don't use %cd%, get the path using Node.js it's more reliable and platform agnostic
+- Don't worry about other teams and trying to work around the Minimum Viable Product
+  - Do just what we need, and once that works cleanly cut it down until it works good for all teams
