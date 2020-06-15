@@ -109,9 +109,9 @@ gulp.task("pull", done => {
 gulp.task("build-unity", async (done) => {
 
 
-    buildPlatformData.windows.unityBuildParam = "-executeMethod Afloat.Util.BuildCLI.Windows";
-    // buildPlatformData.osx.unityBuildParam = "-executeMethod Afloat.Util.BuildCLI.OSX";
-    // buildPlatformData.linux.unityBuildParam = "-executeMethod Afloat.Util.BuildCLI.Linux";
+    buildPlatformData.windows.unityBuildParam = "-executeMethod Afloat.Util.BuildCLI.Development.Windows";
+    // buildPlatformData.osx.unityBuildParam = "-executeMethod Afloat.Util.BuildCLI.Development.OSX";
+    // buildPlatformData.linux.unityBuildParam = "-executeMethod Afloat.Util.BuildCLI.Development.Linux";
     
 
     // builds it for each platform
