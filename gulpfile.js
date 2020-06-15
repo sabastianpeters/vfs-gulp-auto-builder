@@ -109,9 +109,9 @@ gulp.task("pull", done => {
 gulp.task("build-unity", async (done) => {
 
 
-    buildPlatformData.windows.unityBuildParam = "buildWindows64Player";
-    // buildPlatformData.osx.unityBuildParam = "buildOSXUniversalPlayer";
-    // buildPlatformData.linux.unityBuildParam = "buildLinux64Player";
+    buildPlatformData.windows.unityBuildParam = "-executeMethod Afloat.Util.BuildCLI.Windows";
+    // buildPlatformData.osx.unityBuildParam = "-executeMethod Afloat.Util.BuildCLI.OSX";
+    // buildPlatformData.linux.unityBuildParam = "-executeMethod Afloat.Util.BuildCLI.Linux";
     
 
     // builds it for each platform
@@ -133,7 +133,7 @@ gulp.task("build-unity", async (done) => {
                 `"${UnityPath}" -quit -batchmode -logFile stdout.log `+
                 `-profiler-enable `+ /// required for sound designers swap sound banks
                 `-projectPath "%cd%\\${PROJECT_SOURCE_PATH}" `+
-                `-${platformData.unityBuildParam} "%cd%\\${platformData.exePath}"`
+                `${platformData.unityBuildParam} "%cd%\\${platformData.exePath}"`
             )
         });
     }
