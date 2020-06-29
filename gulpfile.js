@@ -12,9 +12,16 @@ const GAME_NAME = "Project Afloat"
 const PROJECT_SOURCE_PATH = "project-src";
 const PROJECT_DEST_PATH = `project-dest`;
 
-const NATURAL_DOC_EXE = ".\\bin\\NaturalDocs\\NaturalDocs.exe"
+const NATURAL_DOC_EXE = ".\\bin\\NaturalDocs\\NaturalDocs.exe";
 const PROJECT_DOCS_DEST_PATH = `project-docs`;
 const PROJECT_DOCS_CONFIG_PATH = `natural-docs-config`;
+
+const ITCHIO_BUTLER_EXE = ".\\bin\\ItchioButler\\butler.exe";
+// !!! NO SPACES HERE !!!
+const ITCHIO_USERNAME = "sabastianpeters";
+const ITCHIO_GAME_NAME = "afloat";
+const ITCHIO_TARGET_BUILD = "latest-windows-64"; /// target channel (build) to upload to
+// !!! !!!
 
 
 const BuildData = require("./lib/BuildData.js");
@@ -243,14 +250,14 @@ gulp.task("compress-builds", (done) => {
 
 
 
-// ## UPLOAD TASKS ##
+// ## GOOGLE DRIVE UPLOAD TASKS ##
 
 const gAuth = require('./lib/GoogleAuth.js');
 const gDrive = require('./lib/GoogleDrive.js')
 const gDriveTools = require('./lib/GoogleDriveTools.js')
 
 
-gulp.task("upload-compressed-builds", async (done) => {
+gulp.task("drive-upload-compressed-builds", async (done) => {
     
     // Authorize client (must be done from pre)
     let credentials = await gAuth.loadCredentials();
@@ -283,6 +290,26 @@ gulp.task("upload-compressed-builds", async (done) => {
 })
 
 
+
+
+// ## ITCHIO UPLOAD TASKS ##
+
+// NOTE: this is one of the only tasks thats build only for Windows
+gulp.task("itchio-upload-compressed-builds", async (done) => {
+
+    await runCmdPromise(`"${ITCHIO_BUTLER_EXE}" push `+ /// command to upload
+        `"${path.join(__dirname, buildPlatformData.windows.zipPath)}" `+ /// zip path
+        `${ITCHIO_USERNAME}/${ITCHIO_GAME_NAME}:${ITCHIO_TARGET_BUILD}` /// target user, game and build
+    );
+    done();
+})
+
+
+
+gulp.task("upload-compressed-builds", gulp.series(
+    "drive-upload-compressed-builds",
+    "itchio-upload-compressed-builds",
+));
 gulp.task("upload", gulp.series("compress-builds", "upload-compressed-builds"));
 
 
