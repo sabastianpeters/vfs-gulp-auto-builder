@@ -11,9 +11,10 @@
   - [GitHub Auth Setup](#github-auth-setup)
   - [Google Auth Setup](#google-auth-setup)
   - [Natural Docs Setup](#natural-docs-setup)
+  - [<div style="display: inline">Itch.io</div> Setup](#div-style%22display-inline%22itchiodiv-setup)
   - [Task Scheduler Setup](#task-scheduler-setup)
-  - [Example Output](#example-output)
-  - [Notes for Next Iteration](#notes-for-next-iteration)
+- [Example Output](#example-output)
+- [Notes for Next Iteration](#notes-for-next-iteration)
 
 ## Project Setup
 
@@ -51,13 +52,18 @@
 
 ### Natural Docs Setup
 - download the [NaturalDocs zip](https://www.naturaldocs.org/download/)
-- create a folder called `bin` in project root
+- create a folder called `bin` in project root and a `NaturalDocs` folder inside of that
 - unzip the folder so that `NaturalDocs.exe` is at the path `.\bin\NaturalDocs\NaturalDocs.exe`
 - from this point, the docs should be all setup
   - if not, init the docs with `.\node_modules\.bin\gulp docs-init`
 - you can customize your project's setting in `.\natural-docs-config\Project.txt`
 - link to [full official guide](https://www.naturaldocs.org/getting_started/getting_set_up/#starting_a_new_project)
 
+
+### <div style="display: inline">Itch.io</div> Setup <!-- div is to prevent url showing up -->
+- download the [itch.io butler zip](https://itch.io/docs/butler/installing.html)
+- Inside of the same `bin` folder as Natural Docs, add a `ItchioButler` folder
+- unzip the folder so that `butler.exe` is at the path `.\bin\ItchioButler\butler.exe`
 
 ### Task Scheduler Setup
 
@@ -84,14 +90,14 @@
 
 ![6](./readme-assets/task-schedueller-6.png)
 
-### Example Output
+## Example Output
 
 ![0](./readme-assets/example-output-0.png)
 ![1](./readme-assets/example-output-1.png)
 ![2](./readme-assets/example-output-2.png)
 
 
-### Notes for Next Iteration
+## Notes for Next Iteration
 
 - Make the build gulpscript seperate from the script that builds for each platform
   - When the gulp script handles this, if even one of the builds or tests fails, the whole thing comes crashing down
