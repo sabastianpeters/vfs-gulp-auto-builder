@@ -119,3 +119,7 @@
 - Don't use %cd%, get the path using Node.js it's more reliable and platform agnostic
 - Don't worry about other teams and trying to work around the Minimum Viable Product
   - Do just what we need, and once that works cleanly cut it down until it works good for all teams
+- Don't cram all of the functionality into the gulp script
+  - just use the gulp to create the task definitions, immediately redirect all of the tasks to a method in an imported module
+  - this allows for the gulpscript to give a clear picture of all of the tasks that can be preformed from the cli
+  - it also help keeps things clean by avoiding making things gulp tasks that don't need to be
