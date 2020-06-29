@@ -64,6 +64,7 @@
 - download the [itch.io butler zip](https://itch.io/docs/butler/installing.html)
 - Inside of the same `bin` folder as Natural Docs, add a `ItchioButler` folder
 - unzip the folder so that `butler.exe` is at the path `.\bin\ItchioButler\butler.exe`
+- `.\node_modules\.bin\gulp itchio-upload-compressed-builds` must be run once to authenticate the butler
 
 ### Task Scheduler Setup
 
