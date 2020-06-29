@@ -103,6 +103,9 @@
   - When the gulp script handles this, if even one of the builds or tests fails, the whole thing comes crashing down
   - Instead, have once central script that calls a new instance of the build script for each one of the (what Unity calls) Build Targets
   - This way if one fails, the process may continue
+  - find a way to provide parameters to a gulp script that's not from the cli
+    - **OR, make the builder completely seperate from gulp. just use gulp to create a cli interface**
+    - similar idea to how we have an builder instance in Unity, but a static class uses that to expose it to CLI and Editor
 - Seperate out functions that are Build Target specific (they depend on the build succeding) from ones that arent
   - For example, no matter which build fails, we still need to (a) pull latest and (b) try to update the code docs
   - Function that are build dependant are (a) building the exe, (b) zipping the file and (c) uploading the file
