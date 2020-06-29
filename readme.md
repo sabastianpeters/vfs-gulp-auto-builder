@@ -15,6 +15,7 @@
   - [Task Scheduler Setup](#task-scheduler-setup)
 - [Example Output](#example-output)
 - [Notes for Next Iteration](#notes-for-next-iteration)
+  - [Known Bugs](#known-bugs)
 
 ## Project Setup
 
@@ -65,6 +66,8 @@
 - Inside of the same `bin` folder as Natural Docs, add a `ItchioButler` folder
 - unzip the folder so that `butler.exe` is at the path `.\bin\ItchioButler\butler.exe`
 - `.\node_modules\.bin\gulp itchio-upload-compressed-builds` must be run once to authenticate the butler
+- run something like `.\bin\ItchioButler\butler.exe push ".\project-dest\Compressed\Windows\Project Afloat.zip" sabastianpeters/afloat:latest-windows-64` but for your game
+  - this is just to verify that builds can be uploaded and there aren't any major issues
 
 ### Task Scheduler Setup
 
@@ -127,3 +130,8 @@
   - just use the gulp to create the task definitions, immediately redirect all of the tasks to a method in an imported module
   - this allows for the gulpscript to give a clear picture of all of the tasks that can be preformed from the cli
   - it also help keeps things clean by avoiding making things gulp tasks that don't need to be
+
+
+### Known Bugs
+- google drive async doesn't work
+- itch.io stdout doesn't work
