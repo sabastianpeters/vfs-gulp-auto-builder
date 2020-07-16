@@ -294,13 +294,18 @@ gulp.task("drive-upload-compressed-builds", async (done) => {
 
 // ## ITCHIO UPLOAD TASKS ##
 
+// .\bin\ItchioButler\butler.exe push C:\Users\pg17sabastian\Desktop\final-project\vfs-gulp-auto-builder\project-dest\Compressed\Windows\Afloat.zip sabastianpeters/afloat:latest-windows-64 
+
 // NOTE: this is one of the only tasks thats build only for Windows
 gulp.task("itchio-upload-compressed-builds", async (done) => {
 
-    runCmd(done, `${ITCHIO_BUTLER_EXE} push `+ /// command to upload
+    await runCmdPromise(`start /d ${__dirname} /wait `+ // opens up new cmd and waits to finish
+        `${ITCHIO_BUTLER_EXE} push `+ /// command to upload
         `${path.join(__dirname, buildPlatformData.windows.zipPath)} `+ /// zip path
         `${ITCHIO_USERNAME}/${ITCHIO_GAME_NAME}:${ITCHIO_TARGET_BUILD}` /// target user, game and build
     );
+
+    done();
 })
 
 
@@ -330,8 +335,8 @@ gulp.task(
         "clear-dest",  
         "pull", 
         "build-unity",
+        "full-docs-build",
         "upload",
-        "full-docs-build"
     )
 );
 
